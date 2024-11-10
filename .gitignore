@@ -1,0 +1,88 @@
+# Gradle 관련 파일
+.gradle/
+**/build/
+**/captures/
+**/output/
+
+# Gradle Wrapper
+!gradle/wrapper/gradle-wrapper.jar
+build/
+!gradlew
+!gradlew.bat
+!gradle/wrapper/gradle-wrapper.properties
+
+# 빌드 관련 파일
+/build/
+
+# Android Studio 설정 파일
+.idea/
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+.idea/misc.xml
+.idea/codestyles/
+.idea/gradle.xml
+.idea/dictionaries/
+.idea/studioSettings.xml
+
+# 로그 및 보고서 파일
+*.log
+*.lock
+*.json
+*.xml
+*.idea/modules.xml
+*.iml
+*.hprof
+
+# OS 및 기타 무시 파일
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+
+# Android Build 관련 파일
+**/generated/
+
+# APK, AAB 파일
+*.apk
+*.aab
+
+# 사용자별 환경 파일
+local.properties
+
+# Kotlin 관련 파일
+**/kotlin/**/build/
+
+# NDK 관련 파일
+.obj/
+.externalNativeBuild/
+
+# IntelliJ IDEA 및 Android Studio 자동 생성 파일
+.idea/*.iml
+
+# Flutter 관련 파일 (Flutter 사용 시 추가)
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.flutter/
+.packages
+.idea/libraries/Dart_SDK.xml
+.idea/libraries/FlutterPlugins.xml
+.idea/libraries/Flutter_for_Android.xml
+
+# Fastlane 관련 파일
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Code Coverage 및 Lint 관련 파일
+.coverage
+.idea/lint.xml
+
+# Git Hooks
+.hooks/
