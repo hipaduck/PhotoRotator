@@ -1,7 +1,6 @@
 package com.hipaduck.imagerotator.presentation.ui
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -118,7 +117,7 @@ fun RotateDialog(
                                 .height(60.dp),
                             colors = ButtonDefaults.buttonColors(),
                             onClick = {
-                                viewModel.inputDirection(Direction.FLIP_LEFT_AND_RIGHT)
+                                viewModel.inputDirection(Direction.FLIP_HORIZONTAL)
                                 sampleBitmap.value = sampleBitmap.value.inverseHorizontalBy()
                             }) {
                             Image(
@@ -136,7 +135,7 @@ fun RotateDialog(
                                 .height(60.dp),
                             colors = ButtonDefaults.buttonColors(),
                             onClick = {
-                                viewModel.inputDirection(Direction.FLIP_UPSIDE_DOWN)
+                                viewModel.inputDirection(Direction.FLIP_VERTICAL)
                                 sampleBitmap.value = sampleBitmap.value.inverseVerticalBy()
                             }) {
                             Image(
@@ -171,7 +170,6 @@ fun RotateDialog(
 
 @Composable
 fun SampleImage(sampleBitmap: Bitmap) {
-    Log.d("GAEGUL", "sampleBitmap size : ${sampleBitmap.width}, ${sampleBitmap.height}")
     Image(
         bitmap = sampleBitmap.asImageBitmap(),
         contentScale = ContentScale.Crop,

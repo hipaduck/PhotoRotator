@@ -220,7 +220,7 @@ class MainViewModel @Inject constructor(@ApplicationContext private val applicat
                     editedBitmap = editedBitmap.rotatedBy(-90.0f)
                 }
 
-                Direction.FLIP_UPSIDE_DOWN -> {
+                Direction.FLIP_VERTICAL -> {
                     editedBitmap = editedBitmap.inverseVerticalBy()
                 }
 
