@@ -6,12 +6,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
@@ -24,14 +23,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.AsyncImage
+import com.hipaduck.imagerotator.R
 import com.hipaduck.imagerotator.domain.model.Photo
 import com.hipaduck.imagerotator.presentation.viewmodel.MainViewModel
 
@@ -68,6 +73,7 @@ fun MainScreen(
     PhotoLister(
         photoList = photoList,
         modifier = Modifier.fillMaxWidth(),
+        viewModel = viewModel,
         onLoadNewPhoto = {
             onLaunchPickMultipleImages()
             /*viewModel.loadRandomPhotos()*/
@@ -83,6 +89,7 @@ private fun showSelectedImages(context: Context, count: Int) {
 fun PhotoLister(
     photoList: List<Photo>,
     modifier: Modifier,
+    viewModel: MainViewModel,
     onLoadNewPhoto: () -> Unit
 ) {
     if (photoList.isEmpty()) {
@@ -115,20 +122,56 @@ fun PhotoLister(
                 modifier = Modifier.fillMaxSize()
             )
         }
+
+        val shouldShowRotateButton = remember {
+            mutableStateOf(photoList.isNotEmpty())
+        }
+        val shouldShowDialog = remember {
+            mutableStateOf(false)
+        }
+
+        RotateButton(shouldShowRotateButton, onClick = {
+            shouldShowDialog.value = true
+        })
+
+        val bitmap = viewModel.getBitmapFromUri(Uri.parse(photoList.last().url))
+            ?: viewModel.getDefaultBitmap()
+
+        RotateDialog(
+            shouldShowDialog = shouldShowDialog,
+            viewModel = viewModel,
+            bitmap = bitmap,
+            onDismiss = {
+                shouldShowDialog.value = false
+            }, onConfirm = {
+                shouldShowDialog.value = false
+                viewModel.rotateSavePhotos()
+            })
     }
 }
 
 @Composable
-fun ActionButton(onClick: () -> Unit) {
-    Column {
-        Row {
+fun RotateButton(shouldShowRotateButton: MutableState<Boolean>, onClick: () -> Unit) {
+    if (shouldShowRotateButton.value) {
+
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             ExtendedFloatingActionButton(
-                onClick = { onClick() }, // do something
-                icon = { Icon(Icons.Filled.Add, "Action button to add gallery photos.") },
-                text = { Text(text = "Add photos") },
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 16.dp, bottom = 32.dp),
+                onClick = { onClick() },
+                icon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.rotate_right),
+                        "Action button to rotate photos."
+                    )
+                },
+                text = { Text(text = "Rotate photos") },
             )
-            Spacer(modifier = Modifier.width(16.dp))
         }
-        Spacer(modifier = Modifier.height(16.dp))
     }
+
 }
