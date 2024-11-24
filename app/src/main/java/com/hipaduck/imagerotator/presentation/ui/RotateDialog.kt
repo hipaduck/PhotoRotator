@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,9 +50,10 @@ fun RotateDialog(
             mutableStateOf(Bitmap.createBitmap(bitmap))
         }
 
-        // is this alright? dismiss is called on confirmed too so it's clearing on init.
-        // need to check if this is safe to do
-        viewModel.clearDirections()
+        LaunchedEffect(true) {
+            viewModel.clearDirections()
+        }
+
         Dialog(onDismissRequest = onDismiss) {
             Card(
                 modifier = Modifier

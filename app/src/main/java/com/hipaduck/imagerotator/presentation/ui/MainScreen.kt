@@ -6,12 +6,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -103,7 +100,9 @@ fun PhotoLister(
                 verticalItemSpacing = 4.dp,
                 horizontalArrangement = Arrangement.spacedBy(4.dp),
                 content = {
-                    items(photoList) { photo ->
+                    items(items = photoList, key = {
+                        it.id
+                    }) { photo ->
                         // When data set is changed, it may cause problems when items doesn't have any status.
                         // So, user may lose it's scroll position. To fix this issue, get a stable and unique key for the item.
                         // https://developer.android.com/develop/ui/compose/lists?hl=ko#item-keys
@@ -130,7 +129,7 @@ fun PhotoLister(
             mutableStateOf(false)
         }
 
-        RotateButton(shouldShowRotateButton, onClick = {
+        RotateButton(shouldShowRotateButton, onRotateImage = {
             shouldShowDialog.value = true
         })
 
@@ -151,9 +150,8 @@ fun PhotoLister(
 }
 
 @Composable
-fun RotateButton(shouldShowRotateButton: MutableState<Boolean>, onClick: () -> Unit) {
+fun RotateButton(shouldShowRotateButton: MutableState<Boolean>, onRotateImage: () -> Unit) {
     if (shouldShowRotateButton.value) {
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -162,7 +160,7 @@ fun RotateButton(shouldShowRotateButton: MutableState<Boolean>, onClick: () -> U
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(end = 16.dp, bottom = 32.dp),
-                onClick = { onClick() },
+                onClick = { onRotateImage() },
                 icon = {
                     Icon(
                         painter = painterResource(id = R.drawable.rotate_right),
